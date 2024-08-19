@@ -7,10 +7,10 @@ import { TemplatePrivateRoute } from "../templates/private-route";
 export function AppRoutes() {
     return (
         <Routes>
-            {/* MINHAS ROTAS PUBLICAS */}
+            
             <Route path="/" element={<LoginPage />} />
             <Route path="/cadastro" element={<CadastroPage />} />
-            {/* MINHAS ROTAS PRIVADAS */}
+            
             <Route path="/dashboard" element={<TemplatePrivateRoute />}>
                 <Route path="/dashboard" element={<HomePage />}/>
             </Route>
