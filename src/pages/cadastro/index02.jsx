@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styles from './styles.module.css';
 
-export function CadastroPage() {
+export function CadastroPage2() {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = (data) => {
@@ -19,7 +19,7 @@ export function CadastroPage() {
                         alt="lab 365"  
                         height="57" 
                     />
-                    <h1 className="h3 mb-3 fw-normal">Preencha todos os campos para efetuar o cadastro.</h1>
+                    <h1 className="h3 mb-3 fw-normal">Exercício 03 - Validação de formulário</h1>
                     
                     <div className="mb-3">
                         <label htmlFor="nome" className="form-label">Nome</label>
@@ -52,15 +52,21 @@ export function CadastroPage() {
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="senha" className="form-label">Senha</label>
+                        <label htmlFor="idade" className="form-label">Idade</label>
                         <input 
-                            type="password" 
+                            type="number" 
                             className="form-control" 
-                            id="senha" 
-                            placeholder="Insira sua senha" 
-                            {...register("senha", { required: "A senha é obrigatória" })}
+                            id="idade" 
+                            placeholder="Insira sua idade" 
+                            {...register("idade", { 
+                                required: "A idade é obrigatória",
+                                min: {
+                                    value: 18,
+                                    message: "Você deve ter pelo menos 18 anos para se cadastrar"
+                                }
+                            })}
                         />
-                        {errors.senha && <span className="text-danger">{errors.senha.message}</span>}
+                        {errors.idade && <span className="text-danger">{errors.idade.message}</span>}
                     </div>
 
                     <button className="btn btn-primary w-100 py-2" type="submit">Cadastrar</button>
