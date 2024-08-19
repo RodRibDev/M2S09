@@ -1,20 +1,24 @@
-import { Link, useNavigate } from 'react-router-dom'
-import styles from './styles.module.css'
-import { useAuth } from '../../contexts/auth'
-import { useForm } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router-dom';
+import styles from './styles.module.css';
+import { useAuth } from '../../contexts/auth';
+import { useForm } from 'react-hook-form';
 
 export function LoginPage() {
-    const { signIn } = useAuth()
-    const navigate = useNavigate()
-    const { register, handleSubmit } = useForm()
+    const { signIn } = useAuth();
+    const navigate = useNavigate();
+    const { register, handleSubmit } = useForm();
 
-    function onSubmit(dados) {
-        console.log(dados)
+    async function onSubmit(dados) {
         try {
-            signIn(dados)
-            navigate('/dashboard')
+            const success = await signIn(dados);
+            if (success) {
+                navigate('/dashboard');
+            } else {
+                alert("Nome de usuário ou senha incorretos.");
+            }
         } catch (error) {
-            alert(error)
+            alert("Ocorreu um erro ao tentar fazer login.");
+            console.error(error);
         }
     }
 
@@ -31,13 +35,13 @@ export function LoginPage() {
                     <h1 className="h3 mb-3 fw-normal">Efetuar login</h1>
                     <div className="form-floating">
                         <input 
-                            type="email" 
+                            type="text" 
                             className="form-control" 
                             id="floatingInput" 
-                            placeholder="name@example.com" 
-                            {...register("email", { required: true })}
+                            placeholder="Insira seu nome de usuário" 
+                            {...register("username", { required: true })}
                         />
-                        <label htmlFor="floatingInput">Email address</label>
+                        <label htmlFor="floatingInput">Nome de usuário</label>
                     </div>
                     <div className="form-floating">
                         <input 
@@ -45,17 +49,11 @@ export function LoginPage() {
                             className="form-control" 
                             id="floatingPassword" 
                             placeholder="Password" 
-                            {...register("password")}
+                            {...register("password", { required: true })}
                         />
                         <label htmlFor="floatingPassword">Password</label>
                     </div>
 
-                    <div className="form-check text-start my-3">
-                        <input className="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault" />
-                        <label className="form-check-label" htmlFor="flexCheckDefault">
-                            Remember me
-                        </label>
-                    </div>
                     <button className="btn btn-primary w-100 py-2" type="submit">Entrar</button>
                     <p className="mt-5 mb-3 text-body-secondary">lab365 &copy; 2024</p>
                     <p>
@@ -63,7 +61,6 @@ export function LoginPage() {
                     </p>
                 </form>
             </div>
-
         </main>
-    )
+    );
 }

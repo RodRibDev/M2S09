@@ -9,7 +9,7 @@ export function TemplatePrivateRoute() {
         <div>
             <nav className="navbar navbar-dark bg-dark" aria-label="First navbar example">
                 <div className="container max-auto">
-                    <a className="navbar-brand" href="#">LAB365 - DASHBOARD</a>
+                    <a className="navbar-brand" href="#">USUÁRIO LOGADO</a>
                 </div>
             </nav>
 
