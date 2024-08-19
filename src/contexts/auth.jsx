@@ -1,31 +1,47 @@
 import { createContext, useContext, useState } from "react";
 
 export const AuthContext = createContext({
-    user: null, // pode ser null ou {}
-    signIn: () => {}, // função entrar na aplicação
-    signOut: () => {} // função para "remover" o estado do usuario da aplicar 
+    user: null,
+    signIn: () => {},
+    signOut: () => {} 
 })
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
 
-    function signIn(data) {
-        // console.log('console no contexto', data)
-        if(data.email !== "fulano@teste.com.br" || data.password !== "123") {
-            throw new Error("Email/Senha invalida")
+    async function signIn(data) {
+        try {
+            const response = await fetch('https://dummyjson.com/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: data.username,
+                    password: data.password,
+                    expiresInMins: 30
+                })
+            });
+
+            const userdata = await response.json();
+
+            if (response.ok) {
+                setUser(userdata);
+                localStorage.setItem('@S09M2:user', JSON.stringify(userdata));
+                localStorage.setItem('@S09M2:token', userdata.token);
+                return true;
+            } else {
+                console.error("Erro de login:", userdata);
+                return false;
+            }
+        } catch (error) {
+            console.error("Erro na requisição:", error);
+            return false;
         }
-        /// fetch ... 
-        
-        setUser({
-            id: Date.now(),
-            first_name: "Fulano de tal",
-            email: data.email,
-        })
-        
     }
 
     function signOut() {
-        setUser(null)
+        setUser(null);
+        localStorage.removeItem('@S09M2:user');
+        localStorage.removeItem('@S09M2:token');
     }
 
     return <AuthContext.Provider value={{ user, signIn, signOut }}>{children}</AuthContext.Provider>
@@ -33,6 +49,5 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
     const contexto = useContext(AuthContext)
-
     return contexto
 }
