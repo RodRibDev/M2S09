@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
 
     async function signIn(data) {
+        console.log(data)
         try {
             const response = await fetch('https://dummyjson.com/auth/login', {
                 method: 'POST',
